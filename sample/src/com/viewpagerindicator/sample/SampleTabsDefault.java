@@ -1,5 +1,6 @@
 package com.viewpagerindicator.sample;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -43,6 +44,12 @@ public class SampleTabsDefault extends BaseSampleActivity {
 		@Override
 		public String getTitle(int position) {
 			return SampleTabsDefault.CONTENT[position % SampleTabsDefault.CONTENT.length].toUpperCase();
+		}
+
+		@Override
+		public Drawable[] getIcons(int position) {
+			// TODO Auto-generated method stub
+			return new Drawable[0];
 		}
 	}
 }

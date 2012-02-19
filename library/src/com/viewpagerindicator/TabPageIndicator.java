@@ -17,6 +17,7 @@
 package com.viewpagerindicator;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.ViewPager.OnPageChangeListener;
@@ -74,7 +75,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         final int childCount = mTabLayout.getChildCount();
         if (childCount > 1 && (widthMode == MeasureSpec.EXACTLY || widthMode == MeasureSpec.AT_MOST)) {
             if (childCount > 2) {
-                mMaxTabWidth = (int)(MeasureSpec.getSize(widthMeasureSpec) * 0.4f);
+                mMaxTabWidth = (int)(MeasureSpec.getSize(widthMeasureSpec) * 0.8f);
             } else {
                 mMaxTabWidth = MeasureSpec.getSize(widthMeasureSpec) / 2;
             }
@@ -124,7 +125,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         }
     }
 
-    private void addTab(String text, int index) {
+    private TabView addTab(String text, int index) {
         //Workaround for not being able to pass a defStyle on pre-3.0
         final TabView tabView = (TabView)mInflater.inflate(R.layout.vpi__tab, null);
         tabView.init(this, text, index);
@@ -132,7 +133,10 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         tabView.setOnClickListener(mTabClickListener);
 
         mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, 1));
+        return tabView;
     }
+    
+    public TabView getTab(int index) { return (TabView)mTabLayout.getChildAt(index); }
 
     @Override
     public void onPageScrollStateChanged(int arg0) {
@@ -178,7 +182,8 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 	        TitleProvider adapter = (TitleProvider)mViewPager.getAdapter();
 	        final int count = ((PagerAdapter)adapter).getCount();
 	        for (int i = 0; i < count; i++) {
-	            addTab(adapter.getTitle(i), i);
+	            addTab(adapter.getTitle(i), i)
+	            	.setIcons(adapter.getIcons(i));
 	        }
 	        if (mSelectedTabIndex > count) {
 	            mSelectedTabIndex = count - 1;
@@ -231,6 +236,17 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
             TextView textView = (TextView)findViewById(android.R.id.text1);
             textView.setText(text);
+        }
+        
+        public void setIcons(Drawable[] icons)
+        {
+        	if(icons == null) return;
+        	TextView textView = (TextView)findViewById(android.R.id.text1);
+            textView.setCompoundDrawables(
+            		icons.length > 0 ? icons[0] : null,
+            		icons.length > 1 ? icons[1] : null,
+            		icons.length > 2 ? icons[2] : null,
+            		icons.length > 3 ? icons[3] : null);
         }
 
         @Override

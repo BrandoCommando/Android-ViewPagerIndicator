@@ -15,6 +15,8 @@
  */
 package com.viewpagerindicator;
 
+import android.graphics.drawable.Drawable;
+
 /**
  * A TitleProvider provides the title to display according to a view.
  */
@@ -25,4 +27,5 @@ public interface TitleProvider {
      * @return
      */
     public String getTitle(int position);
+    public Drawable[] getIcons(int position);
 }
