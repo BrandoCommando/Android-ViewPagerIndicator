@@ -15,7 +15,10 @@
  */
 package com.viewpagerindicator;
 
+import com.viewpagerindicator.TabPageIndicator.TabView;
+
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 /**
  * A TitleProvider provides the title to display according to a view.
@@ -26,6 +29,7 @@ public interface TitleProvider {
      * @param position
      * @return
      */
-    public String getTitle(int position);
-    public Drawable[] getIcons(int position);
+    public String getTitle(final int position);
+    public boolean modifyTab(TabView tab, final int position);
+    public Drawable[] getIcons(final int position);
 }

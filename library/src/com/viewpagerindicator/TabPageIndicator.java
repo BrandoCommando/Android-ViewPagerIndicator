@@ -125,6 +125,15 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
         }
     }
 
+    private TabView addTab(View view, int index) {
+    	final TabView tabView = (TabView)mInflater.inflate(R.layout.vpi__tab, null);
+        tabView.init(this, view, index);
+        tabView.setFocusable(true);
+        tabView.setOnClickListener(mTabClickListener);
+
+        mTabLayout.addView(tabView, new LinearLayout.LayoutParams(0, LayoutParams.FILL_PARENT, 1));
+        return tabView;
+    }
     private TabView addTab(String text, int index) {
         //Workaround for not being able to pass a defStyle on pre-3.0
         final TabView tabView = (TabView)mInflater.inflate(R.layout.vpi__tab, null);
@@ -182,8 +191,7 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 	        TitleProvider adapter = (TitleProvider)mViewPager.getAdapter();
 	        final int count = ((PagerAdapter)adapter).getCount();
 	        for (int i = 0; i < count; i++) {
-	            addTab(adapter.getTitle(i), i)
-	            	.setIcons(adapter.getIcons(i));
+	        	adapter.modifyTab(addTab(adapter.getTitle(i), i), i);
 	        }
 	        if (mSelectedTabIndex > count) {
 	            mSelectedTabIndex = count - 1;
@@ -236,6 +244,15 @@ public class TabPageIndicator extends HorizontalScrollView implements PageIndica
 
             TextView textView = (TextView)findViewById(android.R.id.text1);
             textView.setText(text);
+        }
+        public void init(TabPageIndicator parent, View view, int index) {
+            mParent = parent;
+            mIndex = index;
+
+            //TextView textView = (TextView)findViewById(android.R.id.text1);
+            ViewGroup tab = (ViewGroup)findViewById(R.id.tpi_tab);
+            tab.removeAllViews();
+            tab.addView(view);
         }
         
         public void setIcons(Drawable[] icons)
